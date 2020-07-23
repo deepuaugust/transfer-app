@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { configure, mount } from "enzyme";
+import { configure, mount, shallow } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import TransferComponent from "../components/transferComponent";
 
@@ -74,6 +74,24 @@ describe("Transfer Component", () => {
     wrapper.unmount();
   });
 
+  it("change functionality of checkbox on right", () => {
+    const event = { target: {} };
+    const wrapper = shallow(<TransferComponent data={data} />)
+      .dive()
+      .dive()
+      .dive();
+    wrapper.setState({
+      rightOptions: [
+        {
+          id: 1,
+          value: "Option 1",
+        },
+      ],
+    });
+    wrapper.find('input[name="rightoption"]').at(0).simulate("change", event);
+    wrapper.unmount();
+  });
+
   it("select functionality to move items from left to right", () => {
     const event = { target: {} };
     const wrapper = mount(<TransferComponent data={data} />, {
@@ -85,27 +103,73 @@ describe("Transfer Component", () => {
 
   it("select functionality to move items from right to left", () => {
     const event = { target: {} };
-    const wrapper = mount(<TransferComponent data={data} />, {
-      attachTo: document.body.appendChild(div),
+    const wrapper = shallow(<TransferComponent data={data} />)
+      .dive()
+      .dive()
+      .dive();
+    wrapper.setState({
+      rightOptions: [
+        {
+          id: 1,
+          value: "Option 1",
+        },
+      ],
     });
+    wrapper.find('input[name="rightoption"]').at(0).simulate("change", event);
     wrapper.find('button[value="Deselect"]').at(0).simulate("click", event);
     wrapper.unmount();
   });
 
   it("Move items up", () => {
     const event = { target: {} };
-    const wrapper = mount(<TransferComponent data={data} />, {
-      attachTo: document.body.appendChild(div),
+    const wrapper = shallow(<TransferComponent data={data} />)
+      .dive()
+      .dive()
+      .dive();
+    wrapper.setState({
+      rightOptions: [
+        {
+          id: 1,
+          value: "Option 1",
+        },
+        {
+          id: 2,
+          value: "Option 2",
+        },
+        {
+          id: 3,
+          value: "Option 3",
+        },
+      ],
     });
+    wrapper.find('input[name="rightoption"]').at(2).simulate("change", event);
     wrapper.find('button[value="Moveup"]').at(0).simulate("click", event);
     wrapper.unmount();
   });
 
   it("Move items below", () => {
     const event = { target: {} };
-    const wrapper = mount(<TransferComponent data={data} />, {
-      attachTo: document.body.appendChild(div),
+    const wrapper = shallow(<TransferComponent data={data} />)
+      .dive()
+      .dive()
+      .dive();
+    wrapper.setState({
+      rightOptions: [
+        {
+          id: 1,
+          value: "Option 1",
+        },
+        {
+          id: 2,
+          value: "Option 2",
+        },
+        {
+          id: 3,
+          value: "Option 3",
+        },
+      ],
     });
+    wrapper.find('input[name="rightoption"]').at(2).simulate("change", event);
     wrapper.find('button[value="Movedown"]').at(0).simulate("click", event);
     wrapper.unmount();
   });
